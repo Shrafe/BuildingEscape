@@ -7,7 +7,7 @@
 // Sets default values for this component's properties
 UPositionReporter::UPositionReporter()
 {
-	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
+	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these featurdes
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
 
@@ -20,8 +20,10 @@ void UPositionReporter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// ...
-	
+	//FString ObjectName = GetOwner()->GetName();
+	//FTransform OwnerTransform = GetOwner()->GetTransform();
+	//FVector OwnerVector = OwnerTransform.GetLocation();
+	UE_LOG(LogTemp, Warning, TEXT("%s is at %s"), *GetOwner()->GetName(), *GetOwner()->GetTransform().GetLocation().ToString());
 }
 
 
