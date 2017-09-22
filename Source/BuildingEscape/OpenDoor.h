@@ -24,6 +24,8 @@ public:
 	void OpenDoor();
 	void CloseDoor();
 
+
+
 private:
 
 	float OpenAngle;
@@ -37,6 +39,10 @@ private:
 	UPROPERTY(EditAnywhere)
 	ATriggerVolume* PressurePlate;
 
-	AActor* ActorThatOpens;
+	UPROPERTY(EditAnywhere)
+	float TriggerThreshold = 30.f;
+
+	float GetTotalMassOfActorsOnPlate();
+
 	AActor* Owner;
 };
