@@ -19,10 +19,6 @@ UPositionReporter::UPositionReporter()
 void UPositionReporter::BeginPlay()
 {
 	Super::BeginPlay();
-
-	//FString ObjectName = GetOwner()->GetName();
-	//FTransform OwnerTransform = GetOwner()->GetTransform();
-	//FVector OwnerVector = OwnerTransform.GetLocation();
 	UE_LOG(LogTemp, Warning, TEXT("%s is at %s"), *GetOwner()->GetName(), *GetOwner()->GetTransform().GetLocation().ToString());
 }
 

@@ -25,21 +25,26 @@ void UGrabber::BeginPlay()
 
 	PhysicsHandle = GetOwner()->FindComponentByClass<UPhysicsHandleComponent>();
 	if (!PhysicsHandle) {
-		UE_LOG(LogTemp, Error, TEXT("No PhysicsHandleComponent attached to %s"), *GetOwner()->GetName())
+		UE_LOG(LogTemp, Error, TEXT("No UPhysicsHandleComponent attached to %s"), *GetOwner()->GetName())
 	}
 
 	InputComponent = GetOwner()->FindComponentByClass<UInputComponent>();
 	if (InputComponent) {
-		UE_LOG(LogTemp, Warning, TEXT("InputComponent attached and found for %s"), *GetOwner()->GetName())
+		UE_LOG(LogTemp, Warning, TEXT("UInputComponent attached and found for %s"), *GetOwner()->GetName())
 		InputComponent->BindAction("Grab", IE_Pressed, this, &UGrabber::Grab);
+		InputComponent->BindAction("Grab", IE_Released, this, &UGrabber::Release);
 	}
 	else {
-		UE_LOG(LogTemp, Error, TEXT("No InputComponent attached to %s"), *GetOwner()->GetName())
+		UE_LOG(LogTemp, Error, TEXT("No UInputComponent attached to %s"), *GetOwner()->GetName())
 	}
 }
 
 void UGrabber::Grab() {
-	UE_LOG(LogTemp, Warning, TEXT("Grab function called"))
+	UE_LOG(LogTemp, Warning, TEXT("Grab key pressed"))
+}
+
+void UGrabber::Release() {
+	UE_LOG(LogTemp, Warning, TEXT("Grab key released"))
 }
 
 
