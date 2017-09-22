@@ -3,6 +3,7 @@
 #include "BuildingEscape.h"
 #include "Grabber.h"
 
+
 #define OUT
 // Sets default values for this component's properties
 UGrabber::UGrabber()
@@ -31,7 +32,7 @@ void UGrabber::TickComponent( float DeltaTime, ELevelTick TickType, FActorCompon
 {
 	Super::TickComponent( DeltaTime, TickType, ThisTickFunction );
 
-	// Get player viewpoint this tick
+	/// Get player viewpoint this tick
 	FVector ViewPointLocation;
 	FRotator ViewPointRotation;
 	GetWorld()->GetFirstPlayerController()->GetPlayerViewPoint(
@@ -39,12 +40,7 @@ void UGrabber::TickComponent( float DeltaTime, ELevelTick TickType, FActorCompon
 		OUT ViewPointRotation
 	);
 	
-	//UE_LOG(LogTemp, Warning, TEXT("ViewPointLocation: %s, ViewPointRotation: %s"), 
-	//	*ViewPointLocation.ToString(), 
-	//	*ViewPointRotation.ToString()
-	//)	
-
-	// Draw a red test trace to visualize in world
+	/// Draw a red test trace to visualize in world
 	FVector LineTraceEnd = ViewPointLocation + ViewPointRotation.Vector() * PlayerReach;
 
 	DrawDebugLine(
@@ -58,8 +54,22 @@ void UGrabber::TickComponent( float DeltaTime, ELevelTick TickType, FActorCompon
 		10.f
 	);
 
-	// ray-cast out to reach distance
-	
+	/// Setup query parameters
+	FCollisionQueryParams TraceParameters = FCollisionQueryParams(FName(TEXT("")), false, GetOwner());
+
+	/// Line-trace (ray cast) out to reach distance
+	FHitResult Hit;
+	GetWorld()->LineTraceSingleByObjectType(
+		OUT Hit,
+		ViewPointLocation,
+		LineTraceEnd,
+		FCollisionObjectQueryParams(ECollisionChannel::ECC_PhysicsBody),
+		TraceParameters
+	);
+	AActor* ActorHit = Hit.GetActor();
+	if (ActorHit) {
+		UE_LOG(LogTemp, Warning, TEXT("Line-trace first hit object: %s"), *(ActorHit->GetName()))
+	}
 	// see what we hit that can be grabbed :D
 }
 
