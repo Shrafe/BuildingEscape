@@ -23,6 +23,6 @@ public:
 
 private:
 	float PlayerReach = 100.f;
-		
-	
+
+	UPhysicsHandleComponent* PhysicsHandle = nullptr;
 };
