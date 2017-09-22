@@ -30,11 +30,10 @@ private:
 
 	void Grab();
 	void Release();
-
 	void FindPhysicsHandleComponent();
-
 	void SetupAttachedInputComponent();
 
-	FHitResult GetFirstPhysicsBodyInReach() const;
+	FTwoVectors GetTraceVectors() const;
 
+	FHitResult GetFirstPhysicsBodyInReach() const;
 };
