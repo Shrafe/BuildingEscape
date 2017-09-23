@@ -37,12 +37,12 @@ private:
 	float LastDoorOpenTime;
 
 	UPROPERTY(EditAnywhere)
-	ATriggerVolume* PressurePlate;
+	ATriggerVolume* PressurePlate = nullptr;
 
 	UPROPERTY(EditAnywhere)
 	float TriggerThreshold = 30.f;
 
 	float GetTotalMassOfActorsOnPlate();
 
-	AActor* Owner;
+	AActor* Owner = nullptr;
 };

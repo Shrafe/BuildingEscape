@@ -20,21 +20,31 @@ void UOpenDoor::BeginPlay()
 {
 	Super::BeginPlay();
 	Owner = GetOwner();
+	if (!Owner) {
+		UE_LOG(LogTemp, Error, TEXT("Unable to retrieve Owner for OpenDoor component."))
+	}
+
+	if (!PressurePlate) {
+		UE_LOG(LogTemp, Error, TEXT("No PressurePlate property assigned for %s"), *Owner->GetName())
+	}
 	CloseAngle = Owner->GetActorRotation().Yaw;
 	OpenAngle = CloseAngle - 90.f;
 }
 
 void UOpenDoor::OpenDoor() {
+	if (!Owner) { return; }
 	Owner->SetActorRotation(FRotator(0.f, OpenAngle, 0.f));
 }
 
 void UOpenDoor::CloseDoor() {
+	if (!Owner) { return; }
 	Owner->SetActorRotation(FRotator(0.f, CloseAngle, 0.f));
 }
 
 float UOpenDoor::GetTotalMassOfActorsOnPlate() {
 	float TotalMass = 0.f;
 	TArray<AActor*> OverlappingActors;
+	if (!PressurePlate) { return TotalMass; }
 	PressurePlate->GetOverlappingActors(OUT OverlappingActors);
 	for (const auto& Actor : OverlappingActors) {
 		TotalMass += Actor->FindComponentByClass<UPrimitiveComponent>()->GetMass();
