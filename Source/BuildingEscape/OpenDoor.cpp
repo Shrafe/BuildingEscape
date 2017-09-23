@@ -5,7 +5,6 @@
 
 #define OUT
 
-
 // Sets default values for this component's properties
 UOpenDoor::UOpenDoor()
 {
@@ -13,7 +12,6 @@ UOpenDoor::UOpenDoor()
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
 }
-
 
 // Called when the game starts
 void UOpenDoor::BeginPlay()
@@ -23,22 +21,9 @@ void UOpenDoor::BeginPlay()
 	if (!Owner) {
 		UE_LOG(LogTemp, Error, TEXT("Unable to retrieve Owner for OpenDoor component."))
 	}
-
 	if (!PressurePlate) {
 		UE_LOG(LogTemp, Error, TEXT("No PressurePlate property assigned for %s"), *Owner->GetName())
 	}
-	CloseAngle = Owner->GetActorRotation().Yaw;
-	OpenAngle = CloseAngle - 90.f;
-}
-
-void UOpenDoor::OpenDoor() {
-	if (!Owner) { return; }
-	Owner->SetActorRotation(FRotator(0.f, OpenAngle, 0.f));
-}
-
-void UOpenDoor::CloseDoor() {
-	if (!Owner) { return; }
-	Owner->SetActorRotation(FRotator(0.f, CloseAngle, 0.f));
 }
 
 float UOpenDoor::GetTotalMassOfActorsOnPlate() {
@@ -59,14 +44,12 @@ void UOpenDoor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompon
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	// ...
+	OnCloseRequest.Broadcast();
 	if (GetTotalMassOfActorsOnPlate() > TriggerThreshold) {
-		OpenDoor();
-		LastDoorOpenTime = GetWorld()->GetTimeSeconds();
+		OnOpenRequest.Broadcast();
 	}
-
-	// check if it's time to close the door
-	if (GetWorld()->GetTimeSeconds() - LastDoorOpenTime > DoorCloseDelay) {
-		CloseDoor();
+	else {
+		OnCloseRequest.Broadcast();
 	}
 }
 

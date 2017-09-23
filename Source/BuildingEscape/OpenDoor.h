@@ -1,10 +1,11 @@
-// Copyright Tom Hauser 2016
+// Copyright Tom Hauser 2017
 
 #pragma once
 
 #include "Components/ActorComponent.h"
 #include "OpenDoor.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FDoorEvent);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class BUILDINGESCAPE_API UOpenDoor : public UActorComponent
@@ -24,18 +25,14 @@ public:
 	void OpenDoor();
 	void CloseDoor();
 
+	UPROPERTY(BlueprintAssignable)
+	FDoorEvent OnOpenRequest;
+
+	UPROPERTY(BlueprintAssignable)
+	FDoorEvent OnCloseRequest;
 
 
 private:
-
-	float OpenAngle;
-	float CloseAngle;
-
-	UPROPERTY(EditAnywhere)
-    float DoorCloseDelay = 1.f;
-
-	float LastDoorOpenTime;
-
 	UPROPERTY(EditAnywhere)
 	ATriggerVolume* PressurePlate = nullptr;
 
